@@ -1,21 +1,56 @@
-// [Template no Kotlin Playground](https://pl.kotl.in/WcteahpyN)
+enum class Nivel {Básico, Intermediário, Avançado}
 
-enum class Nivel { BASICO, INTERMEDIARIO, DIFICIL }
+data class Usuario(val nome: String, val email: String, val tipoUsuario: String)
 
-class Usuario
+data class ConteudoEducacional(val nome: String, val duracao: Int, val nivel: Nivel)
 
-data class ConteudoEducacional(var nome: String, val duracao: Int = 60)
-
-data class Formacao(val nome: String, var conteudos: List<ConteudoEducacional>) {
+data class Formacao(val nome: String, val conteudos: List<ConteudoEducacional>, val nivel: Nivel) {
 
     val inscritos = mutableListOf<Usuario>()
     
     fun matricular(usuario: Usuario) {
-        TODO("Utilize o parâmetro $usuario para simular uma matrícula (usar a lista de $inscritos).")
+        inscritos.add(usuario)
+    }
+    
+    fun imprimirListaInscritos(){
+        for(user in inscritos){
+            println(user.nome)
+        }
+    }
+    
+    fun imprimirGradeFormacao(){
+        for(cont in conteudos){
+            println("${cont.nome} - ${cont.duracao}")
+        }
     }
 }
 
 fun main() {
-    TODO("Analise as classes modeladas para este domínio de aplicação e pense em formas de evoluí-las.")
-    TODO("Simule alguns cenários de teste. Para isso, crie alguns objetos usando as classes em questão.")
+    
+    val moduloJava = ConteudoEducacional("Curso de Java", 60, Nivel.Básico)
+    val moduloReact = ConteudoEducacional("Curso de React", 80, Nivel.Intermediário)
+    val moduloAndroid = ConteudoEducacional("Curso de Swift", 120, Nivel.Avançado)
+    
+    val listConteudos = mutableListOf<ConteudoEducacional>()
+    listConteudos.add(moduloJava)
+    listConteudos.add(moduloReact)
+    listConteudos.add(moduloAndroid)
+    
+    val formacaoAndroid = Formacao("Formação Android", listConteudos, Nivel.Básico)
+    
+    val Antônio = Usuario("Antônio", "antonio@gmail.com", "free")
+    val Maria = Usuario("Maria", "maria@gmail.com", "premium")
+    val João = Usuario("João", "joao@gmail.com", "free")
+    
+    formacaoAndroid.matricular(Antônio)
+    formacaoAndroid.matricular(Maria)
+    formacaoAndroid.matricular(João)
+    
+    print("Formação: ")
+    println("${formacaoAndroid.nome} - ${formacaoAndroid.nivel}")
+    println("Grade de Cursos: ")
+    println(formacaoAndroid.imprimirGradeFormacao())
+    println()
+    println("Lista de inscritos aceitos: ")
+    println(formacaoAndroid.imprimirListaInscritos())
 }
